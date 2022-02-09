@@ -1,0 +1,364 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "An API to manage movies",
+    "version": "1.0.0",
+    "title": "Movie Store API",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Movies",
+      "description": "Everything about Movies"
+    }
+  ],
+  "paths": {
+    "/movies": {
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Get all movies in the store",
+        "description": "",
+        "operationId": "getMovie",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieArrayResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Add a new movie to the store",
+        "description": "",
+        "operationId": "addMovie",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/movieRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "description": "The id of the movie",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Movies"
+        ],
+        "summary": "Get a movies in the store by id",
+        "description": "",
+        "operationId": "getMovieById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "movieRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Movie"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "notFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/FailResponse"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Movie": {
+        "type": "object",
+        "required": [
+          "title",
+          "year",
+          "length",
+          "genres",
+          "description",
+          "stars",
+          "director",
+          "plot",
+          "poster",
+          "imdbRating",
+          "imdbUrl"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "length": {
+            "type": "number"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "stars": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "director": {
+            "type": "string"
+          },
+          "plot": {
+            "type": "string"
+          },
+          "poster": {
+            "type": "string"
+          },
+          "imdbRating": {
+            "type": "number"
+          },
+          "imdbUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "MovieResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "code",
+          "type"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "default": null
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "default": null
+          },
+          "data": {
+            "type": "object"
+          }
+        },
+        "example": {
+          "code": 200,
+          "type": "Ok",
+          "message": null,
+          "errors": null,
+          "data": {
+            "_id": "61fbb717b32b5fef4970fe78",
+            "title": "The Godfather: Part II",
+            "year": 1974,
+            "length": 202,
+            "genres": [
+              "Crime",
+              "Drama"
+            ],
+            "description": "The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.",
+            "stars": [
+              "Al Pacino",
+              "Robert De Niro",
+              "Robert Duvall",
+              "Diane Keaton"
+            ],
+            "director": "Francis Ford Coppola",
+            "plot": "The continuing saga of the Corleone crime family tells the story of a young Vito Corleone growing up in Sicily and in 1910s New York; and follows Michael Corleone in the 1950s as he attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
+            "poster": "https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY98_CR1,0,67,98_AL_.jpg",
+            "imdbRating": 9.1,
+            "imdbUrl": "https://www.imdb.com/title/tt0071562/",
+            "__v": 0
+          }
+        }
+      },
+      "MovieArrayResponse": {
+        "type": "object",
+        "required": [
+          "data",
+          "code",
+          "type"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "default": null
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "default": null
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "example": {
+          "code": 200,
+          "type": "Ok",
+          "message": null,
+          "errors": null,
+          "data": [
+            {
+              "_id": "61fbb717b32b5fef4970fe78",
+              "title": "The Godfather: Part II",
+              "year": 1974,
+              "length": 202,
+              "genres": [
+                "Crime",
+                "Drama"
+              ],
+              "description": "The early life and career of Vito Corleone in 1920s New York City is portrayed,   while his son, Michael, expands and tightens his grip on the family crime syndicate.",
+              "stars": [
+                "Al Pacino",
+                "Robert De Niro",
+                "Robert Duvall",
+                "Diane Keaton"
+              ],
+              "director": "Francis Ford Coppola",
+              "plot": "The continuing saga of the Corleone crime family tells the story of a young Vito Corleone   growing up in Sicily and in 1910s New York; and follows Michael Corleone in the 1950s as he   attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
+              "poster": "https://m.media-amazon.com/images/M  /MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY98_CR1  ,0,67,98_AL_.jpg",
+              "imdbRating": 9.1,
+              "imdbUrl": "https://www.imdb.com/title/tt0071562/",
+              "__v": 0
+            }
+          ]
+        }
+      },
+      "FailResponse": {
+        "type": "object",
+        "required": [
+          "code",
+          "type"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "default": null
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "default": null
+          },
+          "data": {
+            "type": "object",
+            "default": null
+          }
+        },
+        "example": {
+          "data": null,
+          "code": 400,
+          "type": "Bad Request",
+          "message": null,
+          "errors": null
+        }
+      }
+    }
+  }
+}
