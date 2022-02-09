@@ -13,48 +13,48 @@
 
 ### Run the app
 
-```bash
+```sh
 yarn start
 ```
 
 or
 
-```bash
+```sh
 npm run start
 ```
 
 ### Start the development server
 
-```bash
+```sh
 yarn start:dev
 ```
 
 or
 
-```bash
+```sh
 npm run start:dev
 ```
 
 ### Seeding the database
 
-```bash
+```sh
 yarn seed
 ```
 
 or
 
-```bash
+```sh
 npm run seed
 ```
 
 ### Clear the database
 
-```bash
+```sh
 yarn seed:clear
 ```
 
 or
 
-```bash
+```sh
 npm run seed:clear
 ```
