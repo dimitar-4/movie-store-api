@@ -4,7 +4,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import movieRoutes from "./routes/movies.js";
+import routes from "./routes/index.js";
+import swaggerUi from "swagger-ui-express";
+import { readFile } from "fs/promises";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const ROOT_DIR = path.join(__dirname, "..");
@@ -14,11 +16,16 @@ dotenv.config();
 const port = process.env.PORT || 3000;
 const app = express();
 
+const swaggerDoc = JSON.parse(
+  await readFile(new URL("../docs/swagger/openapi.json", import.meta.url))
+);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/movies", movieRoutes);
+app.use("/api/movies", routes.movies);
 
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "static", "index.html"))
