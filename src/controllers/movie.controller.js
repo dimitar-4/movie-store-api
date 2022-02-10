@@ -2,12 +2,14 @@ import mongoose from "mongoose";
 import Movie from "../models/movie.js";
 import { Controller } from "./controller.js";
 import express from "express";
+import autoBind from "auto-bind";
 
 const ObjectId = mongoose.Types.ObjectId;
 
 export class MovieController extends Controller {
   constructor() {
     super();
+    autoBind(this);
   }
 
   /**
@@ -18,10 +20,9 @@ export class MovieController extends Controller {
   // @route  GET /api/movies/:id
   // @access Public
   async getMovieById(req, res) {
-    if (!ObjectId.isValid(req.params.id)) return super.notFound(res);
-    const movie = await Movie.findById(req.params.id);
-    if (!movie) return super.notFound(res);
-    return super.ok(res, movie);
+    const movie = await this.getDocOr404(res, Movie, req.params.id);
+    if (!movie) return;
+    return this.ok(res, movie);
   }
 
   /**
@@ -33,7 +34,7 @@ export class MovieController extends Controller {
   // @access Public
   async getMovies(req, res) {
     const movies = await Movie.find();
-    super.ok(res, movies);
+    this.ok(res, movies);
   }
 
   /**
@@ -47,15 +48,15 @@ export class MovieController extends Controller {
     try {
       const movie = new Movie(req.body);
       await movie.save();
-      return super.created(res, movie);
+      return this.created(res, movie);
     } catch (ex) {
       if (ex instanceof mongoose.Error.ValidationError) {
         const errors = [];
         for (const err in ex.errors) errors.push(ex.errors[err].message);
 
-        return super.badRequest(res, errors);
+        return this.badRequest(res, errors);
       } else {
-        return super.badRequest(res, ["Unknown Error"]);
+        return this.badRequest(res, ["Unknown Error"]);
       }
     }
   }
@@ -68,7 +69,25 @@ export class MovieController extends Controller {
   // @route  PUT /api/movies/:id
   // @access Public
   async updateMovie(req, res) {
-    return super.notImplemented(res);
+    const movie = await this.getDocOr404(res, Movie, req.params.id);
+    if (!movie) return;
+
+    return this.notImplemented(res);
+  }
+
+  /**
+   * @param {express.Request} req - request object
+   * @param {express.Response} res - response object
+   */
+  // @desc   Get a movie by id
+  // @route  GET /api/movies/:id
+  // @access Public
+  async deleteMovie(req, res) {
+    const movie = await this.getDocOr404(res, Movie, req.params.id);
+    if (!movie) return;
+
+    await movie.remove();
+    return this.noContent(res);
   }
 }
 

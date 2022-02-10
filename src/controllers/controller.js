@@ -1,5 +1,12 @@
+import mongoose from "mongoose";
+import autoBind from "auto-bind";
+
+const ObjectId = mongoose.Types.ObjectId;
+
 export class Controller {
-  constructor() {}
+  constructor() {
+    autoBind(this);
+  }
 
   ok(res, data, message) {
     return res.status(200).json({
@@ -53,6 +60,19 @@ export class Controller {
 
   notImplemented(res) {
     return res.sendStatus(501);
+  }
+
+  async getDocOr404(res, Model, id) {
+    if (!ObjectId.isValid(id)) {
+      this.notFound(res);
+      return null;
+    }
+    const document = await Model.findById(id);
+    if (!document) {
+      this.notFound(res);
+      return null;
+    }
+    return document;
   }
 }
 
