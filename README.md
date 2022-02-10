@@ -9,6 +9,8 @@
 
    - `PORT` (default = 3000)
 
+   - `ACCESS_KEY` (used to authorize requests)
+
 ## Scripts
 
 ### Run the app
