@@ -45,6 +45,22 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price: {
+    type: Number,
+    required: true,
+    get: (v) => (v / 100).toFixed(2),
+    set: (v) => v * 100,
+  },
+  currency: {
+    type: String,
+    required: true,
+    default: "SEK",
+  },
+  stock: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 const Movie = mongoose.model("Movie", movieSchema);

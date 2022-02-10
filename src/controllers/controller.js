@@ -8,6 +8,7 @@ export class Controller {
     autoBind(this);
   }
 
+  // 200
   ok(res, data, message) {
     return res.status(200).json({
       status: 200,
@@ -18,16 +19,18 @@ export class Controller {
     });
   }
 
+  // 201
   created(res, data, message) {
     return res.status(201).json({
       status: 201,
-      type: "Ok",
+      type: "Created",
       message: message ?? null,
       errors: null,
       data: data ?? null,
     });
   }
 
+  // 204
   noContent(res, message) {
     return res.status(204).json({
       status: 204,
@@ -38,6 +41,7 @@ export class Controller {
     });
   }
 
+  // 400
   badRequest(res, errors, message) {
     return res.status(400).json({
       status: 400,
@@ -48,6 +52,7 @@ export class Controller {
     });
   }
 
+  // 404
   notFound(res, errors, message) {
     return res.status(404).json({
       status: 404,
@@ -58,6 +63,7 @@ export class Controller {
     });
   }
 
+  // 501
   notImplemented(res) {
     return res.sendStatus(501);
   }

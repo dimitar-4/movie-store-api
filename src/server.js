@@ -26,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/api/movies", routes.movies);
+app.use("/api/orders", routes.orders);
 
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "static", "index.html"))

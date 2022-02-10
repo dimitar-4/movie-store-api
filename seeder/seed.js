@@ -1,6 +1,6 @@
-const seedMovies = require("./_seedMovies");
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+import seedMovies from "./_seedMovies.js";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 const MODE_REFRESH = "refresh";
 const MODE_CLEAR = "clear";
