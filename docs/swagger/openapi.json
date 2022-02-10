@@ -23,9 +23,7 @@
   "paths": {
     "/movies": {
       "get": {
-        "tags": [
-          "Movies"
-        ],
+        "tags": ["Movies"],
         "summary": "Get all movies in the store",
         "description": "",
         "operationId": "getMovie",
@@ -43,9 +41,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Movies"
-        ],
+        "tags": ["Movies"],
         "summary": "Add a new movie to the store",
         "description": "",
         "operationId": "addMovie",
@@ -74,6 +70,50 @@
             }
           }
         }
+      },
+      "put": {
+        "tags": ["Movies"],
+        "summary": "Update or create a movies in the store",
+        "description": "",
+        "operationId": "putMovieById",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/moviePutRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
       }
     },
     "/movies/{id}": {
@@ -89,9 +129,7 @@
         }
       ],
       "get": {
-        "tags": [
-          "Movies"
-        ],
+        "tags": ["Movies"],
         "summary": "Get a movies in the store by id",
         "description": "",
         "operationId": "getMovieById",
@@ -110,6 +148,54 @@
             "$ref": "#/components/responses/notFound"
           }
         }
+      },
+      "patch": {
+        "tags": ["Movies"],
+        "summary": "Updates a movie in the store by id",
+        "description": "",
+        "operationId": "patchMovieById",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/moviePatchRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Movies"],
+        "summary": "Deletes a movie in the store by id",
+        "description": "",
+        "operationId": "deleteMovieById",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
       }
     }
   },
@@ -121,6 +207,26 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/Movie"
+            }
+          }
+        }
+      },
+      "moviePutRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/FullMovie"
+            }
+          }
+        }
+      },
+      "moviePatchRequest": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PartialMovie"
             }
           }
         }
@@ -196,13 +302,124 @@
           }
         }
       },
-      "MovieResponse": {
+      "PartialMovie": {
+        "type": "object",
+        "example": {
+          "title": "The Godfather: Part III",
+          "year": 2024,
+          "imdbRating": 5.4
+        },
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "length": {
+            "type": "number"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "stars": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "director": {
+            "type": "string"
+          },
+          "plot": {
+            "type": "string"
+          },
+          "poster": {
+            "type": "string"
+          },
+          "imdbRating": {
+            "type": "number"
+          },
+          "imdbUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "FullMovie": {
         "type": "object",
         "required": [
-          "data",
-          "code",
-          "type"
+          "_id",
+          "title",
+          "year",
+          "length",
+          "genres",
+          "description",
+          "stars",
+          "director",
+          "plot",
+          "poster",
+          "imdbRating",
+          "imdbUrl"
         ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string"
+          },
+          "year": {
+            "type": "number"
+          },
+          "length": {
+            "type": "number"
+          },
+          "genres": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": {
+            "type": "string"
+          },
+          "stars": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "director": {
+            "type": "string"
+          },
+          "plot": {
+            "type": "string"
+          },
+          "poster": {
+            "type": "string"
+          },
+          "imdbRating": {
+            "type": "number"
+          },
+          "imdbUrl": {
+            "type": "string"
+          },
+          "__v": {
+            "type": "number",
+            "readOnly": true
+          }
+        }
+      },
+      "MovieResponse": {
+        "type": "object",
+        "required": ["data", "code", "type"],
         "properties": {
           "code": {
             "type": "integer",
@@ -213,17 +430,20 @@
           },
           "message": {
             "type": "string",
+            "nullable": true,
             "default": null
           },
           "errors": {
             "type": "array",
+            "nullable": true,
+            "default": null,
             "items": {
               "type": "object"
-            },
-            "default": null
+            }
           },
           "data": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           }
         },
         "example": {
@@ -236,10 +456,7 @@
             "title": "The Godfather: Part II",
             "year": 1974,
             "length": 202,
-            "genres": [
-              "Crime",
-              "Drama"
-            ],
+            "genres": ["Crime", "Drama"],
             "description": "The early life and career of Vito Corleone in 1920s New York City is portrayed, while his son, Michael, expands and tightens his grip on the family crime syndicate.",
             "stars": [
               "Al Pacino",
@@ -258,11 +475,7 @@
       },
       "MovieArrayResponse": {
         "type": "object",
-        "required": [
-          "data",
-          "code",
-          "type"
-        ],
+        "required": ["data", "code", "type"],
         "properties": {
           "code": {
             "type": "integer",
@@ -273,14 +486,16 @@
           },
           "message": {
             "type": "string",
+            "nullable": true,
             "default": null
           },
           "errors": {
             "type": "array",
+            "nullable": true,
+            "default": null,
             "items": {
               "type": "object"
-            },
-            "default": null
+            }
           },
           "data": {
             "type": "array",
@@ -300,10 +515,7 @@
               "title": "The Godfather: Part II",
               "year": 1974,
               "length": 202,
-              "genres": [
-                "Crime",
-                "Drama"
-              ],
+              "genres": ["Crime", "Drama"],
               "description": "The early life and career of Vito Corleone in 1920s New York City is portrayed,   while his son, Michael, expands and tightens his grip on the family crime syndicate.",
               "stars": [
                 "Al Pacino",
@@ -323,10 +535,7 @@
       },
       "FailResponse": {
         "type": "object",
-        "required": [
-          "code",
-          "type"
-        ],
+        "required": ["code", "type"],
         "properties": {
           "code": {
             "type": "integer",

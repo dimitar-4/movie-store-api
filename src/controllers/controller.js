@@ -74,6 +74,12 @@ export class Controller {
     }
     return document;
   }
+
+  async getDoc(Model, id) {
+    if (!ObjectId.isValid(id)) return null;
+    const document = await Model.findById(id);
+    return document;
+  }
 }
 
 /**

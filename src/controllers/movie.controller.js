@@ -4,8 +4,6 @@ import { Controller } from "./controller.js";
 import express from "express";
 import autoBind from "auto-bind";
 
-const ObjectId = mongoose.Types.ObjectId;
-
 export class MovieController extends Controller {
   constructor() {
     super();
@@ -46,7 +44,11 @@ export class MovieController extends Controller {
   // @access Public
   async createMovie(req, res) {
     try {
+      delete req.body._id;
+      delete req.body.__v;
+
       const movie = new Movie(req.body);
+
       await movie.save();
       return this.created(res, movie);
     } catch (ex) {
@@ -56,6 +58,37 @@ export class MovieController extends Controller {
 
         return this.badRequest(res, errors);
       } else {
+        console.error(ex);
+        return this.badRequest(res, ["Unknown Error"]);
+      }
+    }
+  }
+
+  /**
+   * @param {express.Request} req - request object
+   * @param {express.Response} res - response object
+   */
+  // @desc   Update a movie
+  // @route  PUT /api/movies/:id
+  // @access Public
+  async updateOrCreateMovie(req, res) {
+    const id = req.body._id;
+    let movie = await this.getDoc(Movie, id);
+    if (!movie) return this.createMovie(req, res);
+
+    try {
+      movie = Object.assign(movie, req.body);
+      movie._id = id;
+      const updatedMovie = await movie.save();
+      return this.ok(res, updatedMovie);
+    } catch (ex) {
+      if (ex instanceof mongoose.Error.ValidationError) {
+        const errors = [];
+        for (const err in ex.errors) errors.push(ex.errors[err].message);
+
+        return this.badRequest(res, errors);
+      } else {
+        console.error(ex);
         return this.badRequest(res, ["Unknown Error"]);
       }
     }
@@ -69,10 +102,28 @@ export class MovieController extends Controller {
   // @route  PUT /api/movies/:id
   // @access Public
   async updateMovie(req, res) {
-    const movie = await this.getDocOr404(res, Movie, req.params.id);
-    if (!movie) return;
+    const id = req.params.id;
+    let movie = await this.getDoc(Movie, id);
+    if (!movie) return this.createMovie(req, res);
 
-    return this.notImplemented(res);
+    try {
+      delete req.body._id;
+      delete req.body.__v;
+
+      movie = Object.assign(movie, req.body);
+      const updatedMovie = await movie.save();
+      return this.ok(res, updatedMovie);
+    } catch (ex) {
+      if (ex instanceof mongoose.Error.ValidationError) {
+        const errors = [];
+        for (const err in ex.errors) errors.push(ex.errors[err].message);
+
+        return this.badRequest(res, errors);
+      } else {
+        console.error(ex);
+        return this.badRequest(res, ["Unknown Error"]);
+      }
+    }
   }
 
   /**
