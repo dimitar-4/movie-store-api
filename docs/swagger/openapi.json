@@ -18,6 +18,10 @@
     {
       "name": "Movies",
       "description": "Everything about Movies"
+    },
+    {
+      "name": "Orders",
+      "description": "Everything about Orders"
     }
   ],
   "paths": {
@@ -197,6 +201,73 @@
           }
         }
       }
+    },
+    "/orders/": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Create a new order",
+        "description": "",
+        "operationId": "createOrder",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/orderPostRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "description": "The id of the order",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get a order by id",
+        "description": "",
+        "operationId": "getOrderById",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -227,6 +298,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/PartialMovie"
+            }
+          }
+        }
+      },
+      "orderPostRequest": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Order"
             }
           }
         }
@@ -566,6 +647,123 @@
           "type": "Bad Request",
           "message": null,
           "errors": null
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": ["user", "movies"],
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "address": {
+                "type": "object",
+                "properties": {
+                  "street": {
+                    "type": "string"
+                  },
+                  "city": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "zip": {
+                    "type": "string"
+                  },
+                  "country": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "movies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "movieId": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      },
+      "OrderResponse": {
+        "type": "object",
+        "required": ["data", "code", "type"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "default": null
+          },
+          "errors": {
+            "type": "array",
+            "nullable": true,
+            "default": null,
+            "items": {
+              "type": "object"
+            }
+          },
+          "data": {
+            "type": "object",
+            "nullable": true
+          }
+        },
+        "example": {
+          "status": 201,
+          "type": "Created",
+          "message": null,
+          "errors": null,
+          "data": {
+            "user": {
+              "firstName": "John",
+              "lastName": "Doe",
+              "email": "johndoe@example.com",
+              "address": {
+                "street": "123 Main St",
+                "city": "Anytown",
+                "state": "CA",
+                "zip": "12345",
+                "country": "USA"
+              }
+            },
+            "movies": [
+              {
+                "movieId": "62051e5ccfbd8e5871475005",
+                "quantity": 1,
+                "currency": "SEK",
+                "title": "The Godfather",
+                "price": "129.99"
+              }
+            ],
+            "_id": "620522f92fda2733b80611ae",
+            "createdAt": "2022-02-10T14:36:41.249Z",
+            "__v": 0
+          }
         }
       }
     }
