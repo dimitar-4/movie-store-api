@@ -14,13 +14,10 @@ import accessKey from "./middleware/accessKey.middleware.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const ROOT_DIR = path.join(__dirname, "..");
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const app = express();
 
 const ACCESS_KEY = process.env.ACCESS_KEY;
-if (!ACCESS_KEY) {
-  throw new Error("ACCESS_KEY is not defined in the environment variables");
-}
 
 const swaggerDoc = JSON.parse(
   await readFile(new URL("../docs/swagger/openapi.json", import.meta.url))
@@ -30,7 +27,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(accessKey(ACCESS_KEY));
+
+// Disable access key middleware if env not set
+if (ACCESS_KEY) app.use(accessKey(ACCESS_KEY));
 
 app.use("/api/movies", routes.movies);
 app.use("/api/orders", routes.orders);

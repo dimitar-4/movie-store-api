@@ -7,9 +7,9 @@
 1. Add a `.env` file with these properties
    - `MONGODB_URI`
 
-   - `PORT` (default = 3000)
+   - `PORT` (default = 8000)
 
-   - `ACCESS_KEY` (used to authorize requests)
+   - `ACCESS_KEY` (Used to authorize requests. If empty, requests are not authorized)
 
 ## Scripts
 
@@ -60,3 +60,9 @@ or
 ```sh
 npm run seed:clear
 ```
+
+## When the app is running
+
+- Navigate to [localhost:8000/api-docs/](http://localhost:8000/api-docs) to see the API documentation ([swagger](https://swagger.io/))
+
+- All API requests must be authorized with the `ACCESS_KEY` using the `Authorization` header (if the `ACCESS_KEY` is set in the `.env` file)
