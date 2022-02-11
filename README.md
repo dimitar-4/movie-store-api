@@ -4,7 +4,7 @@
 
 1. Run `yarn` or `npm install`
 
-1. Add a `.env` file with
+1. Add a `.env` file with these properties
    - `MONGODB_URI`
 
    - `PORT` (default = 3000)
