@@ -47,8 +47,8 @@ try {
     console.log("Connected to MongoDB");
   });
 
-  if (process.env.NODE_ENV !== "production") {
-    app.listen(port, () => {
+  app.listen(port, () => {
+    if (process.env.NODE_ENV !== "production") {
       const start =
         process.platform == "darwin"
           ? "open"
@@ -56,9 +56,9 @@ try {
           ? "start"
           : "xdg-open";
       childProcess.exec(start + " http://localhost:" + port);
-      console.log(`App running on port ${port}`);
-    });
-  }
+    }
+    console.log(`App running on port ${port}`);
+  });
 } catch (error) {
   console.error(error);
   process.exit(1);
