@@ -49,7 +49,7 @@ or
 npm run seed
 ```
 
-### Clear the database
+### Clear the movies in the database
 
 ```sh
 yarn seed:clear
