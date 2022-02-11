@@ -10,6 +10,7 @@ import routes from "./routes/index.js";
 import swaggerUi from "swagger-ui-express";
 import { readFile } from "fs/promises";
 import accessKey from "./middleware/accessKey.middleware.js";
+import childProcess from "child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const ROOT_DIR = path.join(__dirname, "..");
@@ -28,15 +29,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+app.get("/", (req, res) =>
+  res.sendFile(path.join(__dirname, "static", "index.html"))
+);
+
 // Disable access key middleware if env not set
 if (ACCESS_KEY) app.use(accessKey(ACCESS_KEY));
 
 app.use("/api/movies", routes.movies);
 app.use("/api/orders", routes.orders);
-
-app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "static", "index.html"))
-);
 
 try {
   const dbUri = process.env.MONGODB_URI || "";
@@ -46,7 +47,18 @@ try {
     console.log("Connected to MongoDB");
   });
 
-  app.listen(port, () => console.log(`Listening on port ${port}`));
+  if (process.env.NODE_ENV !== "production") {
+    app.listen(port, () => {
+      const start =
+        process.platform == "darwin"
+          ? "open"
+          : process.platform == "win32"
+          ? "start"
+          : "xdg-open";
+      childProcess.exec(start + " http://localhost:" + port);
+      console.log(`App running on port ${port}`);
+    });
+  }
 } catch (error) {
   console.error(error);
   process.exit(1);

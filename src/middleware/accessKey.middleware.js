@@ -8,7 +8,6 @@ import express from "express";
 const accessKey = (key) => {
   return (req, res, next) => {
     const { authorization: reqKey } = req.headers;
-    console.log(reqKey);
     if (reqKey !== key) {
       return res.status(401).json({
         code: 401,
