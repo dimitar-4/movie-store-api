@@ -2,7 +2,7 @@
 
 ## Installation
 
-1. Run `yarn` or `npm install`
+1. Run `yarn` / `npm install` to install the dependencies
 
 1. Add a `.env` file with these properties
    - `MONGODB_URI`
@@ -10,6 +10,8 @@
    - `PORT` (default = 8000)
 
    - `ACCESS_KEY` (Used to authorize requests. If empty, requests are not authorized)
+
+1. Run `yarn seed` / `npm run seed` to populate the database with 21 movies (optional)
 
 ## Scripts
 
