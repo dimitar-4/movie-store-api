@@ -12,7 +12,7 @@ export default async function (clear = false) {
     console.log("\x1b[32mMovies cleared successfully\x1b[0m");
     if (!clear) {
       await Movie.create(movies);
-      console.log("\x1b[32mMovies seeded successfully\x1b[0m");
+      console.log(`\x1b[32m${movies.length} Movies seeded successfully\x1b[0m`);
     }
   } catch (err) {
     console.error(`\x1b[31m${err}\x1b[0m`);
