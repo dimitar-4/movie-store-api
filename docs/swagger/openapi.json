@@ -41,6 +41,16 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
           }
         }
       },
@@ -69,6 +79,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FailResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
                 }
               }
             }
@@ -116,6 +136,16 @@
           },
           "404": {
             "$ref": "#/components/responses/notFound"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
           }
         }
       }
@@ -150,6 +180,16 @@
           },
           "404": {
             "$ref": "#/components/responses/notFound"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
           }
         }
       },
@@ -172,9 +212,6 @@
               }
             }
           },
-          "404": {
-            "$ref": "#/components/responses/notFound"
-          },
           "400": {
             "description": "Bad Request",
             "content": {
@@ -184,6 +221,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/notFound"
           }
         }
       },
@@ -195,6 +245,16 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
           },
           "404": {
             "$ref": "#/components/responses/notFound"
@@ -212,8 +272,8 @@
           "$ref": "#/components/requestBodies/orderPostRequest"
         },
         "responses": {
-          "200": {
-            "description": "Ok",
+          "201": {
+            "description": "Created",
             "content": {
               "application/json": {
                 "schema": {
@@ -228,6 +288,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FailResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
                 }
               }
             }
@@ -259,6 +329,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OrderResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
                 }
               }
             }
@@ -339,7 +419,10 @@
           "plot",
           "poster",
           "imdbRating",
-          "imdbUrl"
+          "imdbUrl",
+          "price",
+          "currency",
+          "stock"
         ],
         "properties": {
           "title": {
@@ -380,6 +463,15 @@
           },
           "imdbUrl": {
             "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "stock": {
+            "type": "number"
           }
         }
       },
@@ -429,6 +521,15 @@
           },
           "imdbUrl": {
             "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "stock": {
+            "type": "number"
           }
         }
       },
@@ -446,7 +547,10 @@
           "plot",
           "poster",
           "imdbRating",
-          "imdbUrl"
+          "imdbUrl",
+          "price",
+          "currency",
+          "stock"
         ],
         "properties": {
           "_id": {
@@ -491,6 +595,15 @@
           },
           "imdbUrl": {
             "type": "string"
+          },
+          "price": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "stock": {
+            "type": "number"
           },
           "__v": {
             "type": "number",
@@ -550,6 +663,9 @@
             "poster": "https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY98_CR1,0,67,98_AL_.jpg",
             "imdbRating": 9.1,
             "imdbUrl": "https://www.imdb.com/title/tt0071562/",
+            "price": "129.99",
+            "currency": "SEK",
+            "stock": 10,
             "__v": 0
           }
         }
@@ -609,6 +725,9 @@
               "poster": "https://m.media-amazon.com/images/M  /MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY98_CR1  ,0,67,98_AL_.jpg",
               "imdbRating": 9.1,
               "imdbUrl": "https://www.imdb.com/title/tt0071562/",
+              "price": "129.99",
+              "currency": "SEK",
+              "stock": 10,
               "__v": 0
             }
           ]
@@ -698,6 +817,12 @@
                 "quantity": {
                   "type": "integer",
                   "format": "int32"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
                 }
               }
             }
@@ -765,7 +890,54 @@
             "__v": 0
           }
         }
+      },
+      "UnauthorizedError": {
+        "type": "object",
+        "required": ["code", "type"],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "default": null
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "default": null
+          },
+          "data": {
+            "type": "object",
+            "default": null
+          }
+        },
+        "example": {
+          "data": null,
+          "code": 401,
+          "type": "Unauthorized",
+          "message": null,
+          "errors": ["Invalid access key"]
+        }
+      }
+    },
+    "securitySchemes": {
+      "accessKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "accessKey": []
+    }
+  ]
 }
