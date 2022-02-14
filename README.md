@@ -28,13 +28,13 @@ npm run start
 ### Start the development server
 
 ```sh
-yarn start:dev
+yarn dev
 ```
 
 or
 
 ```sh
-npm run start:dev
+npm run dev
 ```
 
 ### Seeding the database
